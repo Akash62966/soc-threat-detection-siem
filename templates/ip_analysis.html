@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}IP Threat Intelligence | SOC SIEM{% endblock %}
+
+{% block header_title %}IP Threat Intelligence & Analytics{% endblock %}
+{% block header_subtitle %}Aggregated risk scores and threat profiling for source IP addresses{% endblock %}
+
+{% block content %}
+<div class="alert alert-dark border-secondary d-flex align-items-center gap-3 mb-4" role="alert">
+  <i class="bi bi-shield-check text-info fs-3"></i>
+  <div>
+    <strong class="text-light">Defensive Lab Safety Notice:</strong>
+    <div class="text-muted fs-7">Threat intelligence scoring is derived strictly via passive local authentication log metrics, failed attempt density, and static indicator matching. No external network scanning, pinging, or intrusive actions are performed.</div>
+  </div>
+</div>
+
+<div class="soc-table-card">
+  <div class="card-header-title">
+    <span><i class="bi bi-globe2 text-info"></i> Source IP Intelligence Directory</span>
+    <span class="badge bg-dark border border-secondary text-muted">{{ intel_data|length }} Profiled IPs</span>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table-soc">
+      <thead>
+        <tr>
+          <th>Source IP</th>
+          <th>Total Requests</th>
+          <th>Failed Attempts</th>
+          <th>Failure Ratio</th>
+          <th>Risk Score</th>
+          <th>Threat Flag</th>
+          <th>Threat Tags</th>
+          <th>First / Last Activity</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if intel_data %}
+          {% for ip_row in intel_data %}
+            {% set ratio = (ip_row.failed_events / ip_row.total_events * 100) if ip_row.total_events > 0 else 0 %}
+            <tr>
+              <td><code>{{ ip_row.ip_address }}</code></td>
+              <td>{{ ip_row.total_events }}</td>
+              <td class="text-danger fw-bold">{{ ip_row.failed_events }}</td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px; background-color: #1e293b;">
+                    <div class="progress-bar {% if ratio > 70 %}bg-danger{% elif ratio > 40 %}bg-warning{% else %}bg-info{% endif %}" style="width: {{ ratio }}%;"></div>
+                  </div>
+                  <span class="fs-7 text-muted">{{ ratio|int }}%</span>
+                </div>
+              </td>
+              <td>
+                <span class="badge {% if ip_row.risk_score >= 75 %}bg-danger{% elif ip_row.risk_score >= 40 %}bg-warning text-dark{% else %}bg-secondary{% endif %} fs-7">
+                  {{ ip_row.risk_score }} / 100
+                </span>
+              </td>
+              <td>
+                {% if ip_row.is_suspicious %}
+                  <span class="badge bg-danger text-light"><i class="bi bi-exclamation-triangle-fill me-1"></i> SUSPICIOUS</span>
+                {% else %}
+                  <span class="badge bg-success text-light"><i class="bi bi-check-circle-fill me-1"></i> CLEAN</span>
+                {% endif %}
+              </td>
+              <td>
+                {% for tag in ip_row.threat_tags.split(',') %}
+                  <span class="badge bg-dark border border-secondary text-muted me-1 fs-7">{{ tag.strip() }}</span>
+                {% endfor %}
+              </td>
+              <td class="fs-7 text-muted">
+                <div>First: {{ ip_row.first_seen }}</div>
+                <div>Last: {{ ip_row.last_seen }}</div>
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="8" class="text-center text-muted py-4">
+              No IP intelligence data available. Load sample logs or upload a CSV file to aggregate metrics.
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

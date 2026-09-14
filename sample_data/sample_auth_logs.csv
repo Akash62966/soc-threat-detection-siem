@@ -1,0 +1,33 @@
+timestamp,username,source_ip,event_type,status,user_agent,location,failure_reason
+2026-09-14 08:30:15,alice.smith,192.168.1.105,LOGIN,SUCCESS,Mozilla/5.0 (Windows NT 10.0; Win64; x64),New York US,None
+2026-09-14 08:45:22,bob.jones,192.168.1.108,LOGIN,SUCCESS,Mozilla/5.0 (Macintosh; Intel Mac OS X),San Francisco US,None
+2026-09-14 09:01:10,carol.white,192.168.1.112,LOGIN,FAILED,Mozilla/5.0 (X11; Linux x86_64),Chicago US,Invalid Password
+2026-09-14 09:01:45,carol.white,192.168.1.112,LOGIN,SUCCESS,Mozilla/5.0 (X11; Linux x86_64),Chicago US,None
+2026-09-14 10:00:00,johndoe,192.168.1.50,LOGIN,SUCCESS,Mozilla/5.0 (Windows NT 10.0; Win64; x64),New York US,None
+2026-09-14 10:10:05,johndoe,198.51.100.99,LOGIN,SUCCESS,Mozilla/5.0 (Windows NT 10.0; Win64; x64),Tokyo JP,None
+2026-09-14 11:00:01,admin,198.51.100.44,LOGIN,FAILED,Python-urllib/3.10,Frankfurt DE,Invalid Credentials
+2026-09-14 11:00:15,admin,198.51.100.44,LOGIN,FAILED,Python-urllib/3.10,Frankfurt DE,Invalid Credentials
+2026-09-14 11:00:28,admin,198.51.100.44,LOGIN,FAILED,Python-urllib/3.10,Frankfurt DE,Invalid Credentials
+2026-09-14 11:00:42,admin,198.51.100.44,LOGIN,FAILED,Python-urllib/3.10,Frankfurt DE,Invalid Credentials
+2026-09-14 11:01:05,admin,198.51.100.44,LOGIN,FAILED,Python-urllib/3.10,Frankfurt DE,Invalid Credentials
+2026-09-14 11:01:20,admin,198.51.100.44,LOGIN,FAILED,Python-urllib/3.10,Frankfurt DE,Invalid Credentials
+2026-09-14 11:01:35,admin,198.51.100.44,LOGIN,FAILED,Python-urllib/3.10,Frankfurt DE,Invalid Credentials
+2026-09-14 11:01:50,admin,198.51.100.44,LOGIN,FAILED,Python-urllib/3.10,Frankfurt DE,Invalid Credentials
+2026-09-14 11:02:10,admin,198.51.100.44,LOGIN,SUCCESS,Python-urllib/3.10,Frankfurt DE,None
+2026-09-14 14:15:00,user1,203.0.113.88,LOGIN,FAILED,Mozilla/5.0,London UK,Bad Password
+2026-09-14 14:15:05,user2,203.0.113.88,LOGIN,FAILED,Mozilla/5.0,London UK,Bad Password
+2026-09-14 14:15:10,user3,203.0.113.88,LOGIN,FAILED,Mozilla/5.0,London UK,Bad Password
+2026-09-14 14:15:15,user4,203.0.113.88,LOGIN,FAILED,Mozilla/5.0,London UK,Bad Password
+2026-09-14 14:15:20,user5,203.0.113.88,LOGIN,FAILED,Mozilla/5.0,London UK,Bad Password
+2026-09-14 14:15:25,user6,203.0.113.88,LOGIN,FAILED,Mozilla/5.0,London UK,Bad Password
+2026-09-14 14:15:30,user7,203.0.113.88,LOGIN,FAILED,Mozilla/5.0,London UK,Bad Password
+2026-09-14 14:15:35,user8,203.0.113.88,LOGIN,FAILED,Mozilla/5.0,London UK,Bad Password
+2026-09-15 02:15:10,sysadmin,45.33.32.156,LOGIN,FAILED,Mozilla/5.0,Beijing CN,Account Lockout
+2026-09-15 02:16:40,sysadmin,45.33.32.156,LOGIN,FAILED,Mozilla/5.0,Beijing CN,Invalid MFA Token
+2026-09-15 03:04:12,root,185.220.101.5,LOGIN,FAILED,Go-http-client/1.1,TOR Node,Access Denied
+2026-09-15 03:04:18,root,185.220.101.5,LOGIN,FAILED,Go-http-client/1.1,TOR Node,Access Denied
+2026-09-15 03:04:25,root,185.220.101.5,LOGIN,FAILED,Go-http-client/1.1,TOR Node,Access Denied
+2026-09-15 03:04:30,root,185.220.101.5,LOGIN,FAILED,Go-http-client/1.1,TOR Node,Access Denied
+2026-09-15 03:04:35,root,185.220.101.5,LOGIN,FAILED,Go-http-client/1.1,TOR Node,Access Denied
+2026-09-15 07:12:00,david.miller,192.168.1.120,LOGIN,SUCCESS,Mozilla/5.0 (Windows NT 10.0; Win64; x64),Boston US,None
+2026-09-15 07:45:30,emily.davis,192.168.1.125,LOGIN,SUCCESS,Mozilla/5.0 (Macintosh; Intel Mac OS X),Seattle US,None

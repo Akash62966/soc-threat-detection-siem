@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vennela ❤️ Akash | A Story Written For You</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Sacramento&display=swap" rel="stylesheet">
+
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+    <!-- Ambient Canvas & Mouse Spotlight Glow -->
+    <canvas id="bgCanvas"></canvas>
+    <div id="cursorGlow" class="cursor-glow"></div>
+
+    <!-- Main Container -->
+    <main class="app-container">
+
+        <!-- ================= 🎬 SCENE 1 — HEY VENNEELA ================= -->
+        <section id="scene-1" class="scene active">
+            <div class="scene-content flex-center">
+                <div class="pulse-heart-container">
+                    <div class="tiny-pulse-heart">❤️</div>
+                    <div class="pulse-ring"></div>
+                </div>
+
+                <div class="typewriter-container">
+                    <h1 id="s1-line1" class="typewriter-line title-text"></h1>
+                    <p id="s1-line2" class="typewriter-line subtitle-text delay-1"></p>
+                    <p id="s1-line3" class="typewriter-line subtitle-text delay-2"></p>
+                </div>
+
+                <button id="s1-btn" class="glow-btn hidden-btn">
+                    <span>Open it 💌</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= 🌙 SCENE 2 — THE SUSPENSE ================= -->
+        <section id="scene-2" class="scene hidden">
+            <div class="scene-content flex-center">
+                <div class="suspense-text-group">
+                    <p class="reveal-line line-1">I've been keeping something in my heart…</p>
+                    <p class="reveal-line line-2">Something I've wanted to tell you for a long time.</p>
+                    <p class="reveal-line line-3">I've thought about saying it so many times.</p>
+                    <p class="reveal-line line-4">But every time…</p>
+                    <p class="reveal-line line-5 highlight-text">…I got nervous. 😭❤️</p>
+                    <p class="reveal-line line-6">So I decided to let this little website say it for me.</p>
+                </div>
+
+                <button id="s2-btn" class="glow-btn hidden-btn">
+                    <span>Continue 👀</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= 💕 SCENE 3 — THE FEELING ================= -->
+        <section id="scene-3" class="scene hidden">
+            <div class="scene-content flex-center">
+                <div class="glass-card feeling-card">
+                    <div id="feeling-phase-1" class="feeling-phase active-phase">
+                        <h2 class="card-intro-name">Vennela…</h2>
+                        <p class="card-line">You became a very special part of my life.</p>
+                        <p class="card-line">You make ordinary moments feel special.</p>
+                        <p class="card-line">You make me smile without even trying.</p>
+                    </div>
+
+                    <div id="feeling-phase-2" class="feeling-phase hidden-phase">
+                        <p class="card-line fade-intro">And somewhere along the way…</p>
+                        <h2 class="card-dramatic-reveal">My heart started choosing you. ❤️</h2>
+                        <p class="card-line fade-sub">Again and again.</p>
+                    </div>
+                </div>
+
+                <button id="s3-btn" class="glow-btn hidden-btn">
+                    <span id="s3-btn-text">Continue ✨</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= 💓 SCENE 4 — THE HEARTBEAT ================= -->
+        <section id="scene-4" class="scene hidden">
+            <div class="scene-content flex-center">
+                <div class="heartbeat-hero-wrapper">
+                    <div id="beatingHeart" class="beating-heart">❤️</div>
+                    <div class="heartbeat-aura"></div>
+                </div>
+
+                <div class="heartbeat-text-group">
+                    <p class="heartbeat-line line-1">Okay…</p>
+                    <p class="heartbeat-line line-2">No more hiding.</p>
+                    <p class="heartbeat-line line-3">No more being nervous.</p>
+                    <p class="heartbeat-line line-4 highlight-heartbeat">I want to tell you exactly how I feel.</p>
+                </div>
+
+                <button id="s4-btn" class="glow-btn heartbeat-btn hidden-btn">
+                    <span>Tell me ❤️</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= 🌹 SCENE 5 — THE LOVE CONFESSION ================= -->
+        <section id="scene-5" class="scene hidden">
+            <div class="scene-content flex-center">
+                <div class="confession-bg-heart">❤️</div>
+                <div class="confession-container">
+                    <h2 class="confession-name">Vennela…</h2>
+                    <h1 class="confession-bold-title">I love you. ❤️</h1>
+                    
+                    <div class="confession-lines">
+                        <p class="confession-sub line-1">Not just for a moment.</p>
+                        <p class="confession-sub line-2">Not just for today.</p>
+                        <p class="confession-sub line-3">I've been carrying these feelings in my heart for so long…</p>
+                        <p class="confession-sub line-4 highlight-gold">…and I finally want you to know.</p>
+                    </div>
+
+                    <button id="s5-btn" class="glow-btn hidden-btn">
+                        <span>One last question… 🥺</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 💍 SCENE 6 & 7 — THE PROPOSAL & RUNAWAY NO BUTTON ================= -->
+        <section id="scene-6" class="scene hidden">
+            <div class="scene-content flex-center">
+                <div class="proposal-glass-card">
+                    <div class="proposal-glowing-heart">❤️</div>
+                    
+                    <div class="proposal-text-flow">
+                        <p class="prop-line p-1">Vennela…</p>
+                        <p class="prop-line p-2">I love you with all my heart. ❤️</p>
+                        <p class="prop-line p-3">And there's one thing I've been wanting to ask you…</p>
+                        
+                        <div class="question-reveal-box">
+                            <h1 id="proposalQuestion" class="proposal-main-question">Vennela, will you be mine? 🥹❤️</h1>
+                        </div>
+                    </div>
+
+                    <!-- Reactions toast banner -->
+                    <div id="noToast" class="no-reaction-toast hidden"></div>
+
+                    <!-- Proposal Area Container for safe button movements -->
+                    <div id="proposalActionArea" class="proposal-action-area">
+                        <button id="yesBtn" class="btn yes-btn">
+                            <span id="yesBtnText">YES ❤️</span>
+                        </button>
+
+                        <button id="noBtn" class="btn no-btn">
+                            <span id="noBtnText">NO 🙈</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 🎉 SCENE 8 — YES CELEBRATION ================= -->
+        <section id="scene-8" class="scene hidden">
+            <div class="scene-content flex-center">
+                <div class="celebration-glass-card">
+                    <div class="celebration-badge">💖 IT'S A YES! 💖</div>
+                    <h1 class="celebration-main-title">YAAAAAAAAAY!!! 🥹❤️</h1>
+                    <h2 class="celebration-subtitle">Vennela said YES!</h2>
+                    
+                    <div class="celebration-lines">
+                        <p class="celeb-line line-1">You just made Akash the happiest person ever. ❤️</p>
+                        <p class="celeb-line line-2">Thank you for choosing me.</p>
+                        <p class="celeb-line line-3 highlight-gold">I promise I'll treasure this moment forever. ❤️</p>
+                    </div>
+
+                    <button id="s8-btn" class="glow-btn celeb-btn">
+                        <span>One last message… 💌</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 💌 SCENE 9 — FROM AKASH ================= -->
+        <section id="scene-9" class="scene hidden">
+            <div class="scene-content flex-center">
+                <div class="romantic-letter-card">
+                    <div class="letter-header">
+                        <span class="wax-seal">💌</span>
+                        <h2 class="letter-title">For Vennela ❤️</h2>
+                    </div>
+
+                    <div id="letterBody" class="letter-body-text">
+                        <!-- Loaded dynamically from config.js -->
+                    </div>
+
+                    <button id="s9-btn" class="glow-btn letter-btn">
+                        <span>Our Story Begins ✨</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= ❤️ SCENE 10 — FINAL SCREEN ================= -->
+        <section id="scene-10" class="scene hidden">
+            <div class="scene-content flex-center">
+                <div class="final-pulsing-heart">❤️</div>
+                
+                <div class="final-text-group">
+                    <h1 class="final-couple-names">Vennela ❤️</h1>
+                    <p class="final-line line-1">This is where our story begins.</p>
+                    <p class="final-line line-2 highlight-gold">Forever starts with a yes. ❤️</p>
+                    
+                    <div class="final-signature-block">
+                        <p class="signature-heading">With all my love,</p>
+                        <p class="signature-author">Akash ❤️</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Load Config & Script -->
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

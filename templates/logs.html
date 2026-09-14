@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Log Ingestion & System Logs | SOC SIEM{% endblock %}
+
+{% block header_title %}Log Ingestion & Data Grid{% endblock %}
+{% block header_subtitle %}Upload CSV log files or filter ingested authentication events{% endblock %}
+
+{% block content %}
+<!-- Upload Form Card -->
+<div class="soc-table-card mb-4">
+  <div class="card-header-title">
+    <span><i class="bi bi-upload text-info"></i> Upload Authentication CSV Log File</span>
+  </div>
+  <form id="uploadLogForm" action="{{ url_for('api_upload_logs') }}" method="POST" enctype="multipart/form-data" class="row g-3 align-items-center">
+    <div class="col-md-8">
+      <input type="file" class="form-control form-control-soc" name="log_file" accept=".csv" required>
+      <div class="form-text text-muted">Required columns: <code>timestamp, username, source_ip, status</code> (Optional: <code>event_type, user_agent, location, failure_reason</code>)</div>
+    </div>
+    <div class="col-md-4 text-end">
+      <button type="submit" class="btn-soc">
+        <i class="bi bi-file-earmark-arrow-up-fill"></i> Upload & Run Threat Detection
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Logs Filter Form -->
+<div class="soc-table-card">
+  <div class="card-header-title">
+    <span><i class="bi bi-funnel-fill text-muted"></i> Log Filter & Search</span>
+  </div>
+
+  <form method="GET" action="{{ url_for('logs_page') }}" class="row g-3 mb-4">
+    <div class="col-md-3">
+      <label class="form-label text-muted fs-7">Login Status</label>
+      <select name="status" class="form-select form-control-soc" onchange="this.form.submit()">
+        <option value="ALL" {% if status_filter == 'ALL' %}selected{% endif %}>All Statuses</option>
+        <option value="SUCCESS" {% if status_filter == 'SUCCESS' %}selected{% endif %}>SUCCESS Only</option>
+        <option value="FAILED" {% if status_filter == 'FAILED' %}selected{% endif %}>FAILED Only</option>
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label text-muted fs-7">Search Username</label>
+      <input type="text" name="username" class="form-control form-control-soc" placeholder="e.g. admin" value="{{ username_filter }}">
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label text-muted fs-7">Search Source IP</label>
+      <input type="text" name="ip" class="form-control form-control-soc" placeholder="e.g. 198.51.100.44" value="{{ ip_filter }}">
+    </div>
+
+    <div class="col-md-2 d-flex align-items-end">
+      <button type="submit" class="btn-soc w-100">Filter Logs</button>
+    </div>
+  </form>
+
+  <!-- Logs Table Grid -->
+  <div class="table-responsive">
+    <table class="table-soc">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Timestamp</th>
+          <th>Username</th>
+          <th>Source IP</th>
+          <th>Event Type</th>
+          <th>Status</th>
+          <th>Location</th>
+          <th>User Agent / Device</th>
+          <th>Failure Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if logs %}
+          {% for log in logs %}
+            <tr>
+              <td>{{ log.id }}</td>
+              <td><code>{{ log.timestamp }}</code></td>
+              <td class="fw-semibold">{{ log.username }}</td>
+              <td><code>{{ log.source_ip }}</code></td>
+              <td><span class="badge bg-dark border border-secondary text-muted">{{ log.event_type }}</span></td>
+              <td>
+                <span class="badge-status status-{{ log.status|lower }}">{{ log.status }}</span>
+              </td>
+              <td>{{ log.location or 'Unknown' }}</td>
+              <td class="text-truncate" style="max-width: 180px;" title="{{ log.user_agent }}">{{ log.user_agent }}</td>
+              <td class="text-muted fs-7">{{ log.failure_reason or '-' }}</td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="9" class="text-center text-muted py-4">
+              No matching log records found in database.
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('uploadLogForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+  fetch('/api/upload-logs', {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.error) {
+      alert("Upload Error: " + data.error);
+    } else {
+      alert(`Success! Ingested ${data.inserted_logs} log rows. Triggered ${data.rule_alerts_generated} rule alerts and ${data.ml_alerts_generated} ML alerts.`);
+      window.location.reload();
+    }
+  })
+  .catch(err => alert("Upload failed: " + err));
+});
+</script>
+{% endblock %}

@@ -1,0 +1,1030 @@
+/* ==========================================================================
+   💖 VENNELA & AKASH LOVE PROPOSAL STYLESHEET
+   Cinematic Desktop-First Experience (1366x768 Optimized)
+   ========================================================================== */
+
+:root {
+    /* Color Palette */
+    --bg-dark: #040106;
+    --bg-burgundy: radial-gradient(circle at 50% 40%, #2b051b 0%, #12010b 60%, #040106 100%);
+    --card-bg: rgba(30, 6, 20, 0.65);
+    --card-border: rgba(255, 120, 170, 0.28);
+    --card-glow: rgba(255, 0, 85, 0.3);
+    
+    --accent-red: #ff0055;
+    --accent-pink: #ff4d8d;
+    --accent-crimson: #d90429;
+    --accent-gold: #ffe0b2;
+    
+    --text-primary: #fff0f5;
+    --text-secondary: rgba(255, 230, 240, 0.85);
+    --text-muted: rgba(255, 200, 220, 0.65);
+
+    /* Fonts */
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-script: 'Dancing Script', 'Sacramento', cursive;
+
+    /* Transitions */
+    --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Reset & Global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+    background: var(--bg-dark);
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    position: relative;
+}
+
+/* Canvas & Cursor Glow */
+#bgCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.cursor-glow {
+    position: fixed;
+    width: 380px;
+    height: 380px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 0, 85, 0.12) 0%, rgba(255, 77, 141, 0.04) 45%, transparent 70%);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    transition: opacity 0.3s ease;
+    mix-blend-mode: screen;
+}
+
+/* Main Container & Scenes Layout */
+.app-container {
+    position: relative;
+    z-index: 10;
+    width: 100vw;
+    height: 100vh;
+    height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.scene {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: scale(0.96);
+}
+
+.scene.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: scale(1);
+}
+
+.scene.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: scale(1.04);
+}
+
+.scene-content {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    z-index: 12;
+}
+
+.flex-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Common Glowing Buttons */
+.glow-btn {
+    position: relative;
+    background: linear-gradient(135deg, #ff0055 0%, #ff4d8d 50%, #d90429 100%);
+    border: none;
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    font-weight: 600;
+    padding: 16px 42px;
+    border-radius: 40px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 10px 30px rgba(255, 0, 85, 0.45), 0 0 20px rgba(255, 77, 141, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+    transition: var(--transition-bounce);
+    margin-top: 2.2rem;
+    overflow: hidden;
+    letter-spacing: 0.5px;
+}
+
+.glow-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -150%;
+    width: 100%;
+    height: 200%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+    transform: rotate(25deg);
+    transition: all 0.6s ease;
+}
+
+.glow-btn:hover::before {
+    left: 150%;
+}
+
+.glow-btn:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 16px 40px rgba(255, 0, 85, 0.7), 0 0 35px rgba(255, 77, 141, 0.6);
+}
+
+.glow-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.hidden-btn {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+    pointer-events: none;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.hidden-btn.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+/* Glassmorphism Card Style */
+.glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--card-border);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 45px var(--card-glow), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+    border-radius: 28px;
+    padding: 3.5rem 3rem;
+    width: 100%;
+    max-width: 780px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Golden & Highlighted Text */
+.highlight-gold {
+    color: var(--accent-gold);
+    text-shadow: 0 0 15px rgba(255, 224, 178, 0.4);
+    font-weight: 600;
+}
+
+.highlight-text {
+    color: var(--accent-pink);
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   🔐 SCENE 0 — PASSCODE LOCK SCREEN STYLES
+   ========================================================================== */
+#scene-0 {
+    background: radial-gradient(circle at 50% 40%, #200213 0%, #0a0107 70%, #040106 100%);
+}
+
+.lock-card {
+    max-width: 480px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+}
+
+.lock-emoji {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 0 20px rgba(255, 0, 85, 0.8));
+    animation: tinyPulse 2s infinite alternate;
+}
+
+.lock-title {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff 30%, #ffb3d1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.lock-subtitle {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.8rem;
+    font-weight: 300;
+}
+
+.passcode-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.input-wrapper {
+    width: 100%;
+}
+
+.pass-input {
+    width: 100%;
+    padding: 16px 24px;
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 120, 180, 0.35);
+    border-radius: 30px;
+    outline: none;
+    text-align: center;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.pass-input:focus {
+    border-color: var(--accent-pink);
+    box-shadow: 0 0 20px rgba(255, 0, 85, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.lock-error-text {
+    color: #ff4d6d;
+    font-size: 0.95rem;
+    margin-top: 0.6rem;
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+}
+
+.shake-input {
+    animation: inputShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes inputShake {
+    10%, 90% { transform: translate3d(-2px, 0, 0); }
+    20%, 80% { transform: translate3d(4px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+    40%, 60% { transform: translate3d(6px, 0, 0); }
+}
+
+/* ==========================================================================
+   🎬 SCENE 1 — HEY VENNEELA
+   ========================================================================== */
+#scene-1 {
+    background: #040106;
+}
+
+.pulse-heart-container {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.tiny-pulse-heart {
+    font-size: 3.5rem;
+    z-index: 2;
+    filter: drop-shadow(0 0 20px rgba(255, 0, 85, 0.9));
+    animation: tinyPulse 2s ease-in-out infinite alternate;
+}
+
+.pulse-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 0, 85, 0.4) 0%, transparent 70%);
+    animation: ringExpand 2.2s ease-in-out infinite;
+    z-index: 1;
+}
+
+@keyframes tinyPulse {
+    0% { transform: scale(0.95); }
+    100% { transform: scale(1.12); filter: drop-shadow(0 0 35px rgba(255, 0, 85, 1)); }
+}
+
+@keyframes ringExpand {
+    0% { transform: scale(0.8); opacity: 0.8; }
+    100% { transform: scale(2.2); opacity: 0; }
+}
+
+.typewriter-container {
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.title-text {
+    font-family: var(--font-heading);
+    font-size: 3.2rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #ffffff 30%, #ffb3d1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle-text {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    font-weight: 300;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.subtitle-text.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   🌙 SCENE 2 — THE SUSPENSE
+   ========================================================================== */
+#scene-2 {
+    background: var(--bg-burgundy);
+}
+
+.suspense-text-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    max-width: 720px;
+}
+
+.reveal-line {
+    font-size: 1.6rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    font-weight: 300;
+}
+
+.reveal-line.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal-line.highlight-text {
+    font-size: 1.8rem;
+}
+
+/* ==========================================================================
+   💕 SCENE 3 — THE FEELING
+   ========================================================================== */
+#scene-3 {
+    background: var(--bg-burgundy);
+}
+
+.feeling-card {
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feeling-phase {
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    width: 100%;
+}
+
+.feeling-phase.active-phase {
+    opacity: 1;
+    transform: scale(1);
+    display: block;
+}
+
+.feeling-phase.hidden-phase {
+    opacity: 0;
+    transform: scale(0.95);
+    display: none;
+}
+
+.card-intro-name {
+    font-family: var(--font-heading);
+    font-size: 2.8rem;
+    color: var(--accent-pink);
+    margin-bottom: 1.2rem;
+}
+
+.card-line {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin: 0.8rem 0;
+    line-height: 1.5;
+    font-weight: 300;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.card-line.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card-dramatic-reveal {
+    font-family: var(--font-heading);
+    font-size: 2.6rem;
+    margin: 1.4rem 0;
+    background: linear-gradient(135deg, #ffffff 0%, #ff4d8d 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(255, 0, 85, 0.5);
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.card-dramatic-reveal.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ==========================================================================
+   💓 SCENE 4 — THE HEARTBEAT
+   ========================================================================== */
+#scene-4 {
+    background: radial-gradient(circle at 50% 50%, #200213 0%, #0a0107 70%, #040106 100%);
+}
+
+.heartbeat-hero-wrapper {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+}
+
+.beating-heart {
+    font-size: 7.5rem;
+    z-index: 3;
+    filter: drop-shadow(0 0 35px rgba(255, 0, 85, 0.95));
+    animation: lubDubHeartbeat 1.3s ease-in-out infinite;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+}
+
+.heartbeat-aura {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 0, 85, 0.5) 0%, rgba(255, 77, 141, 0.15) 50%, transparent 75%);
+    animation: auraPulse 1.3s ease-in-out infinite;
+    z-index: 1;
+}
+
+/* Lub-dub realistic heartbeat rhythm */
+@keyframes lubDubHeartbeat {
+    0% { transform: scale(1); }
+    12% { transform: scale(1.22); filter: drop-shadow(0 0 50px rgba(255, 0, 85, 1)); }
+    24% { transform: scale(1.08); }
+    36% { transform: scale(1.3); filter: drop-shadow(0 0 65px rgba(255, 0, 85, 1)); }
+    55% { transform: scale(1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes auraPulse {
+    0% { transform: scale(0.9); opacity: 0.4; }
+    12% { transform: scale(1.5); opacity: 0.8; }
+    24% { transform: scale(1.2); opacity: 0.5; }
+    36% { transform: scale(1.8); opacity: 0.9; }
+    55% { transform: scale(1); opacity: 0.4; }
+    100% { transform: scale(0.9); opacity: 0.4; }
+}
+
+/* Expanding heart transition class */
+.beating-heart.expanding {
+    animation: none !important;
+    transform: scale(45) !important;
+    opacity: 0;
+    transition: transform 1.2s cubic-bezier(0.5, 0, 0.75, 0), opacity 1.2s ease;
+}
+
+.heartbeat-text-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.heartbeat-line {
+    font-size: 1.6rem;
+    color: var(--text-secondary);
+    font-weight: 300;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.heartbeat-line.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.highlight-heartbeat {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   🌹 SCENE 5 — THE LOVE CONFESSION
+   ========================================================================== */
+#scene-5 {
+    background: radial-gradient(circle at 50% 40%, #3d0524 0%, #17010e 65%, #040106 100%);
+}
+
+.confession-bg-heart {
+    position: absolute;
+    font-size: 32rem;
+    color: rgba(255, 0, 85, 0.05);
+    z-index: 1;
+    pointer-events: none;
+    filter: blur(10px);
+    transition: color 2s ease, filter 2s ease;
+}
+
+.confession-bg-heart.brighten {
+    color: rgba(255, 0, 85, 0.18);
+    filter: blur(4px) drop-shadow(0 0 60px rgba(255, 0, 85, 0.6));
+}
+
+.confession-container {
+    position: relative;
+    z-index: 5;
+    max-width: 800px;
+}
+
+.confession-name {
+    font-family: var(--font-heading);
+    font-size: 2.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.confession-name.show {
+    opacity: 1;
+}
+
+.confession-bold-title {
+    font-family: var(--font-heading);
+    font-size: 4.8rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff 10%, #ff4d8d 50%, #ff0055 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 40px rgba(255, 0, 85, 0.7);
+    margin-bottom: 2rem;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.confession-bold-title.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.confession-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+.confession-sub {
+    font-size: 1.6rem;
+    color: var(--text-secondary);
+    font-weight: 300;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.confession-sub.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   💍 SCENE 6 & 7 — THE PROPOSAL & RUNAWAY NO BUTTON
+   ========================================================================== */
+#scene-6 {
+    background: radial-gradient(circle at 50% 50%, #29041b 0%, #0d0109 70%, #040106 100%);
+}
+
+.proposal-glass-card {
+    background: rgba(28, 5, 19, 0.75);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid rgba(255, 100, 160, 0.35);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(255, 0, 85, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+    border-radius: 36px;
+    padding: 3.5rem 3rem 4rem 3rem;
+    width: 100%;
+    max-width: 820px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.proposal-glowing-heart {
+    font-size: 4.5rem;
+    filter: drop-shadow(0 0 25px rgba(255, 0, 85, 0.9));
+    animation: tinyPulse 2s ease-in-out infinite alternate;
+    margin-bottom: 1.2rem;
+}
+
+.proposal-text-flow {
+    margin-bottom: 2rem;
+}
+
+.prop-line {
+    font-size: 1.6rem;
+    color: var(--text-secondary);
+    margin: 0.6rem 0;
+    font-weight: 300;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.prop-line.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.question-reveal-box {
+    margin-top: 1.8rem;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.question-reveal-box.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.proposal-main-question {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff 0%, #ff80b3 50%, #ff0055 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 35px rgba(255, 0, 85, 0.6);
+}
+
+/* Playful reaction toast */
+.no-reaction-toast {
+    background: rgba(255, 0, 85, 0.2);
+    border: 1px solid rgba(255, 100, 160, 0.5);
+    backdrop-filter: blur(10px);
+    color: #ffffff;
+    font-size: 1.15rem;
+    font-weight: 500;
+    padding: 10px 24px;
+    border-radius: 30px;
+    margin-bottom: 1.8rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.no-reaction-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.no-reaction-toast.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Proposal Action Area for dodge bounds */
+.proposal-action-area {
+    position: relative;
+    width: 100%;
+    min-height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+}
+
+.btn {
+    border: none;
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding: 16px 48px;
+    border-radius: 40px;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.yes-btn {
+    background: linear-gradient(135deg, #ff0055 0%, #ff4d8d 100%);
+    color: #ffffff;
+    box-shadow: 0 10px 30px rgba(255, 0, 85, 0.5), 0 0 25px rgba(255, 77, 141, 0.4);
+    z-index: 10;
+}
+
+.yes-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 16px 45px rgba(255, 0, 85, 0.8), 0 0 35px rgba(255, 77, 141, 0.7);
+}
+
+.no-btn {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    z-index: 20;
+    position: relative;
+    touch-action: none;
+}
+
+/* ==========================================================================
+   🎉 SCENE 8 — YES CELEBRATION
+   ========================================================================== */
+#scene-8 {
+    background: radial-gradient(circle at 50% 50%, #4a0429 0%, #1c0110 65%, #040106 100%);
+}
+
+.celebration-glass-card {
+    background: rgba(40, 7, 28, 0.75);
+    backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid rgba(255, 120, 180, 0.4);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 70px rgba(255, 0, 85, 0.5);
+    border-radius: 36px;
+    padding: 3.5rem 3rem;
+    width: 100%;
+    max-width: 820px;
+}
+
+.celebration-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(255, 0, 85, 0.3), rgba(255, 120, 180, 0.2));
+    border: 1px solid rgba(255, 120, 180, 0.4);
+    color: var(--accent-gold);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    padding: 8px 22px;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+}
+
+.celebration-main-title {
+    font-family: var(--font-heading);
+    font-size: 3.8rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff 0%, #ff4d8d 50%, #ffe0b2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 40px rgba(255, 0, 85, 0.8);
+    margin-bottom: 0.5rem;
+}
+
+.celebration-subtitle {
+    font-size: 2.2rem;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+    font-weight: 500;
+}
+
+.celebration-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.celeb-line {
+    font-size: 1.55rem;
+    color: var(--text-secondary);
+    font-weight: 300;
+}
+
+/* Screen shake effect on YES click */
+body.shake {
+    animation: screenShake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes screenShake {
+    10%, 90% { transform: translate3d(-2px, 1px, 0); }
+    20%, 80% { transform: translate3d(3px, -2px, 0); }
+    30%, 50%, 70% { transform: translate3d(-5px, 3px, 0); }
+    40%, 60% { transform: translate3d(5px, -3px, 0); }
+}
+
+/* ==========================================================================
+   💌 SCENE 9 — FROM AKASH (ROMANTIC LETTER)
+   ========================================================================== */
+#scene-9 {
+    background: radial-gradient(circle at 50% 50%, #2a0319 0%, #0d0108 70%, #040106 100%);
+}
+
+.romantic-letter-card {
+    background: linear-gradient(145deg, rgba(38, 8, 26, 0.85) 0%, rgba(20, 3, 14, 0.92) 100%);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 120, 170, 0.35);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 50px rgba(255, 0, 85, 0.3), inset 0 0 40px rgba(0, 0, 0, 0.5);
+    border-radius: 28px;
+    padding: 3.5rem;
+    width: 100%;
+    max-width: 760px;
+    text-align: left;
+    position: relative;
+}
+
+.letter-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 120, 170, 0.2);
+    padding-bottom: 1.2rem;
+}
+
+.wax-seal {
+    font-size: 2.8rem;
+    filter: drop-shadow(0 0 10px rgba(255, 0, 85, 0.6));
+}
+
+.letter-title {
+    font-family: var(--font-heading);
+    font-size: 2.6rem;
+    color: var(--accent-pink);
+}
+
+.letter-body-text {
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: var(--text-primary);
+    white-space: pre-line;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+}
+
+.letter-btn {
+    margin-top: 0;
+    align-self: center;
+}
+
+/* ==========================================================================
+   ❤️ SCENE 10 — FINAL SCREEN
+   ========================================================================== */
+#scene-10 {
+    background: radial-gradient(circle at 50% 50%, #200213 0%, #0a0107 70%, #040106 100%);
+}
+
+.final-pulsing-heart {
+    font-size: 6.5rem;
+    filter: drop-shadow(0 0 40px rgba(255, 0, 85, 0.9));
+    animation: tinyPulse 2.5s ease-in-out infinite alternate;
+    margin-bottom: 2rem;
+}
+
+.final-couple-names {
+    font-family: var(--font-heading);
+    font-size: 3.8rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff 20%, #ff4d8d 60%, #ffe0b2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 35px rgba(255, 0, 85, 0.6);
+    margin-bottom: 1.5rem;
+}
+
+.final-line {
+    font-size: 1.6rem;
+    color: var(--text-secondary);
+    margin: 0.6rem 0;
+    font-weight: 300;
+}
+
+.final-signature-block {
+    margin-top: 3rem;
+}
+
+.signature-heading {
+    font-size: 1.3rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 0.3rem;
+}
+
+.signature-author {
+    font-family: var(--font-script);
+    font-size: 3.2rem;
+    color: var(--accent-pink);
+    text-shadow: 0 0 20px rgba(255, 77, 141, 0.6);
+}
+
+/* ==========================================================================
+   📱 RESPONSIVE ADAPTATIONS (MOBILE & TABLET SUPPORT)
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .title-text { font-size: 2.8rem; }
+    .confession-bold-title { font-size: 3.8rem; }
+    .proposal-main-question { font-size: 2.5rem; }
+    .celebration-main-title { font-size: 3.2rem; }
+}
+
+@media (max-width: 768px) {
+    .glass-card, .proposal-glass-card, .celebration-glass-card, .romantic-letter-card {
+        padding: 2.2rem 1.8rem;
+        border-radius: 24px;
+        width: 92vw;
+    }
+
+    .title-text { font-size: 2.2rem; }
+    .subtitle-text { font-size: 1.25rem; }
+    .reveal-line { font-size: 1.3rem; }
+    .card-intro-name { font-size: 2.2rem; }
+    .card-line { font-size: 1.25rem; }
+    .card-dramatic-reveal { font-size: 2rem; }
+    .beating-heart { font-size: 5.5rem; }
+    .confession-bold-title { font-size: 3rem; }
+    .confession-sub { font-size: 1.25rem; }
+    .proposal-main-question { font-size: 2rem; }
+    .celebration-main-title { font-size: 2.5rem; }
+    .celebration-subtitle { font-size: 1.6rem; }
+    .celeb-line { font-size: 1.25rem; }
+    .letter-body-text { font-size: 1.1rem; }
+    .final-couple-names { font-size: 2.8rem; }
+
+    .proposal-action-area {
+        flex-direction: flex-row;
+        gap: 1.5rem;
+    }
+
+    .btn {
+        padding: 14px 32px;
+        font-size: 1.1rem;
+    }
+}

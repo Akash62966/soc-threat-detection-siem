@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Security Alerts Queue | SOC SIEM{% endblock %}
+
+{% block header_title %}Security Alerts Queue & Triage{% endblock %}
+{% block header_subtitle %}Review, triage, and investigate automated security detection flags{% endblock %}
+
+{% block content %}
+<div class="soc-table-card">
+  <!-- Filter controls -->
+  <form method="GET" action="{{ url_for('alerts_page') }}" class="row g-3 mb-4">
+    <div class="col-md-4">
+      <label class="form-label text-muted fs-7">Severity Filter</label>
+      <select name="severity" class="form-select form-control-soc" onchange="this.form.submit()">
+        <option value="ALL" {% if severity_filter == 'ALL' %}selected{% endif %}>All Severities</option>
+        <option value="Critical" {% if severity_filter == 'Critical' %}selected{% endif %}>Critical</option>
+        <option value="High" {% if severity_filter == 'High' %}selected{% endif %}>High</option>
+        <option value="Medium" {% if severity_filter == 'Medium' %}selected{% endif %}>Medium</option>
+        <option value="Low" {% if severity_filter == 'Low' %}selected{% endif %}>Low</option>
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label text-muted fs-7">Triage Status Filter</label>
+      <select name="status" class="form-select form-control-soc" onchange="this.form.submit()">
+        <option value="ALL" {% if status_filter == 'ALL' %}selected{% endif %}>All Statuses</option>
+        <option value="NEW" {% if status_filter == 'NEW' %}selected{% endif %}>NEW</option>
+        <option value="INVESTIGATING" {% if status_filter == 'INVESTIGATING' %}selected{% endif %}>INVESTIGATING</option>
+        <option value="RESOLVED" {% if status_filter == 'RESOLVED' %}selected{% endif %}>RESOLVED</option>
+      </select>
+    </div>
+
+    <div class="col-md-4 d-flex align-items-end">
+      <a href="{{ url_for('alerts_page') }}" class="btn-soc btn-soc-outline w-100 text-center">Clear Filters</a>
+    </div>
+  </form>
+
+  <!-- Alerts Table -->
+  <div class="table-responsive">
+    <table class="table-soc">
+      <thead>
+        <tr>
+          <th>Alert ID</th>
+          <th>Timestamp</th>
+          <th>Severity</th>
+          <th>Attack Type</th>
+          <th>Source IP</th>
+          <th>User</th>
+          <th>MITRE Mapping</th>
+          <th>Status</th>
+          <th>Triage Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if alerts %}
+          {% for alt in alerts %}
+            <tr>
+              <td class="fw-bold text-info">{{ alt.alert_id }}</td>
+              <td class="fs-7">{{ alt.timestamp }}</td>
+              <td>
+                <span class="badge-sev badge-sev-{{ alt.severity|lower }}">{{ alt.severity }}</span>
+              </td>
+              <td><strong class="text-light">{{ alt.attack_type }}</strong></td>
+              <td><code>{{ alt.source_ip }}</code></td>
+              <td>{{ alt.username }}</td>
+              <td>
+                <span class="badge bg-dark border border-secondary text-info fs-7">{{ alt.mitre_technique_id }}</span>
+                <span class="text-muted fs-7 d-block">{{ alt.mitre_technique_name }}</span>
+              </td>
+              <td>
+                <span class="badge-status status-{{ alt.status|lower }}">{{ alt.status }}</span>
+              </td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-outline-secondary dropdown-toggle py-0 px-2 fs-7" type="button" data-bs-toggle="dropdown">
+                    Action
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-dark">
+                    <li>
+                      <a class="dropdown-item fs-7 text-info" href="{{ url_for('investigate_page', alert_id=alt.alert_id) }}">
+                        <i class="bi bi-search"></i> Deep Dive Investigation
+                      </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                      <button class="dropdown-item fs-7 text-warning" onclick="updateAlertStatus('{{ alt.alert_id }}', 'INVESTIGATING')">
+                        <i class="bi bi-hourglass-split"></i> Mark Investigating
+                      </button>
+                    </li>
+                    <li>
+                      <button class="dropdown-item fs-7 text-success" onclick="updateAlertStatus('{{ alt.alert_id }}', 'RESOLVED')">
+                        <i class="bi bi-check-circle-fill"></i> Mark Resolved
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="9" class="text-center text-muted py-4">
+              No security alerts match the selected filter criteria.
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

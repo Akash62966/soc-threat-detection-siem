@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | SOC Threat Detection & SIEM{% endblock %}
+
+{% block header_title %}SOC Threat Detection & SIEM Dashboard{% endblock %}
+{% block header_subtitle %}Overview of security events, authentication trends, and threat alerts{% endblock %}
+
+{% block content %}
+<!-- KPI Cards Grid -->
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-title">Total Log Events</div>
+    <div class="kpi-val">{{ kpis.total_logins }}</div>
+    <div class="kpi-sub"><i class="bi bi-activity text-info"></i> Ingested System Logs</div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-title">Successful Logins</div>
+    <div class="kpi-val text-success">{{ kpis.successful_logins }}</div>
+    <div class="kpi-sub"><i class="bi bi-check-circle-fill text-success"></i> Authenticated Users</div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-title">Failed Logins</div>
+    <div class="kpi-val text-danger">{{ kpis.failed_logins }}</div>
+    <div class="kpi-sub"><i class="bi bi-x-circle-fill text-danger"></i> Rejected Attempts</div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-title">Detected Threat Alerts</div>
+    <div class="kpi-val text-warning">{{ kpis.total_alerts }}</div>
+    <div class="kpi-sub"><i class="bi bi-shield-slash-fill text-warning"></i> Rule & ML Flags</div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-title">Suspicious IPs</div>
+    <div class="kpi-val text-danger">{{ kpis.suspicious_ips }}</div>
+    <div class="kpi-sub"><i class="bi bi-crosshair text-danger"></i> High Risk Originators</div>
+  </div>
+</div>
+
+<!-- Charts Grid -->
+<div class="charts-grid">
+  <div class="chart-card">
+    <div class="card-header-title">
+      <span><i class="bi bi-graph-up text-info"></i> Authentication Activity Timeline</span>
+      <span class="badge bg-dark border border-secondary text-muted">24-Hour Window</span>
+    </div>
+    <div style="height: 280px; position: relative;">
+      <canvas id="timelineChart"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="card-header-title">
+      <span><i class="bi bi-pie-chart-fill text-warning"></i> Alert Severity Breakdown</span>
+    </div>
+    <div style="height: 280px; position: relative;">
+      <canvas id="severityChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="charts-grid" style="grid-template-columns: 1fr 1fr;">
+  <div class="chart-card">
+    <div class="card-header-title">
+      <span><i class="bi bi-bar-chart-fill text-primary"></i> Top Detected Attack Vectors</span>
+    </div>
+    <div style="height: 250px; position: relative;">
+      <canvas id="attackChart"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-card d-flex flex-column justify-content-between">
+    <div class="card-header-title">
+      <span><i class="bi bi-cpu-fill text-success"></i> Scikit-Learn Anomaly Detection Engine</span>
+    </div>
+    <div class="p-3 bg-dark rounded border border-secondary text-muted fs-7">
+      <p class="mb-2"><strong class="text-light">IsolationForest Model Status:</strong> <span class="badge bg-success">ACTIVE</span></p>
+      <p class="mb-2">Calculates high-dimensional anomaly scores based on hour-of-day, failure density, and entity deviation metrics.</p>
+      <p class="mb-0">Automatically converts negative decision function scores into actionable SOC alerts mapped to MITRE ATT&CK T1078.003.</p>
+    </div>
+    <div class="mt-3 text-end">
+      <a href="{{ url_for('alerts_page') }}" class="btn-soc btn-soc-outline fs-7">View Full Alert Queue &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Security Alerts Table -->
+<div class="soc-table-card">
+  <div class="card-header-title">
+    <span><i class="bi bi-exclamation-octagon-fill text-danger"></i> Recent High Priority Alerts</span>
+    <a href="{{ url_for('alerts_page') }}" class="btn-soc btn-soc-outline btn-sm">View All Alerts</a>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table-soc">
+      <thead>
+        <tr>
+          <th>Alert ID</th>
+          <th>Timestamp</th>
+          <th>Source IP</th>
+          <th>Target User</th>
+          <th>Attack Type</th>
+          <th>Severity</th>
+          <th>MITRE Technique</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if recent_alerts %}
+          {% for alt in recent_alerts %}
+            <tr>
+              <td class="fw-bold text-info">{{ alt.alert_id }}</td>
+              <td>{{ alt.timestamp }}</td>
+              <td><code>{{ alt.source_ip }}</code></td>
+              <td>{{ alt.username }}</td>
+              <td><span class="text-light">{{ alt.attack_type }}</span></td>
+              <td>
+                <span class="badge-sev badge-sev-{{ alt.severity|lower }}">{{ alt.severity }}</span>
+              </td>
+              <td><span class="badge bg-dark border border-secondary text-muted">{{ alt.mitre_technique_id }} - {{ alt.mitre_technique_name }}</span></td>
+              <td>
+                <span class="badge-status status-{{ alt.status|lower }}">{{ alt.status }}</span>
+              </td>
+              <td>
+                <a href="{{ url_for('investigate_page', alert_id=alt.alert_id) }}" class="btn btn-sm btn-outline-info py-0 px-2 fs-7">
+                  <i class="bi bi-search"></i> Investigate
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="9" class="text-center text-muted py-4">
+              <i class="bi bi-info-circle fs-5 d-block mb-2"></i> No security alerts generated yet. Click <strong>"Load Sample Data"</strong> above to ingest test logs.
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

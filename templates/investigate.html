@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Incident Investigation - {{ alert.alert_id }} | SOC SIEM{% endblock %}
+
+{% block header_title %}Incident Deep-Dive & Forensics{% endblock %}
+{% block header_subtitle %}Investigating Alert: {{ alert.alert_id }}{% endblock %}
+
+{% block content %}
+<div class="row g-4 mb-4">
+  <!-- Alert Details Panel -->
+  <div class="col-md-7">
+    <div class="soc-table-card h-100">
+      <div class="card-header-title">
+        <span><i class="bi bi-shield-exclamation text-danger"></i> Alert Incident Summary</span>
+        <span class="badge-sev badge-sev-{{ alert.severity|lower }}">{{ alert.severity }} Severity</span>
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-6">
+          <small class="text-muted d-block">Alert ID</small>
+          <strong class="text-info fs-5">{{ alert.alert_id }}</strong>
+        </div>
+        <div class="col-6">
+          <small class="text-muted d-block">Triage Status</small>
+          <span class="badge-status status-{{ alert.status|lower }} fs-6">{{ alert.status }}</span>
+        </div>
+        <div class="col-6">
+          <small class="text-muted d-block">Incident Timestamp</small>
+          <span class="text-light">{{ alert.timestamp }}</span>
+        </div>
+        <div class="col-6">
+          <small class="text-muted d-block">Attack Classification</small>
+          <span class="text-warning fw-bold">{{ alert.attack_type }}</span>
+        </div>
+        <div class="col-6">
+          <small class="text-muted d-block">Source IP Address</small>
+          <code>{{ alert.source_ip }}</code>
+        </div>
+        <div class="col-6">
+          <small class="text-muted d-block">Target Username</small>
+          <strong class="text-light">{{ alert.username }}</strong>
+        </div>
+      </div>
+
+      <div class="p-3 bg-dark rounded border border-secondary mb-3">
+        <small class="text-muted d-block mb-1 fw-bold">Triggered Rule Description:</small>
+        <div class="text-light">{{ alert.description }}</div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <button class="btn-soc btn-soc-outline btn-sm text-warning" onclick="updateAlertStatus('{{ alert.alert_id }}', 'INVESTIGATING')">
+          <i class="bi bi-hourglass-split"></i> Set Investigating
+        </button>
+        <button class="btn-soc btn-sm bg-success text-white" onclick="updateAlertStatus('{{ alert.alert_id }}', 'RESOLVED')">
+          <i class="bi bi-check-circle-fill"></i> Set Resolved
+        </button>
+        <a href="{{ url_for('alerts_page') }}" class="btn-soc btn-soc-outline btn-sm ms-auto">Back to Alerts Queue</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MITRE ATT&CK Mapping Card -->
+  <div class="col-md-5">
+    <div class="soc-table-card h-100">
+      <div class="card-header-title">
+        <span><i class="bi bi-diagram-3-fill text-info"></i> MITRE ATT&CK Mapping</span>
+      </div>
+      <div class="p-3 bg-dark rounded border border-secondary mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="badge bg-info text-dark fw-bold fs-6">{{ alert.mitre_technique_id }}</span>
+          <span class="text-muted fs-7">Tactic: {{ alert.mitre_tactic }}</span>
+        </div>
+        <h5 class="text-light mb-2">{{ alert.mitre_technique_name }}</h5>
+        <p class="text-muted fs-7 mb-0">Defensive mapping aligns this authentication event with industry-standard adversary tactical behaviors.</p>
+      </div>
+
+      <div class="mt-3">
+        <small class="text-muted d-block mb-2 font-monospace">AUTOMATED SOC EXPLANATION:</small>
+        <div class="p-3 bg-dark rounded border border-secondary text-light fs-7 font-monospace style-whitespace-pre" style="white-space: pre-line;">
+          {{ explanation }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Related Log Events Timeline -->
+<div class="soc-table-card">
+  <div class="card-header-title">
+    <span><i class="bi bi-clock-history text-primary"></i> Incident Log Timeline (Chronological Context)</span>
+    <span class="badge bg-dark border border-secondary text-muted">{{ logs|length }} Context Events</span>
+  </div>
+
+  <div class="p-3">
+    {% if logs %}
+      <div class="timeline-container ps-3">
+        {% for log in logs %}
+          <div class="timeline-item {% if log.status == 'FAILED' %}failed{% endif %}">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <div>
+                <span class="fw-bold text-light me-2">{{ log.timestamp }}</span>
+                <span class="badge-status status-{{ log.status|lower }} me-2">{{ log.status }}</span>
+                <span class="badge bg-dark border border-secondary text-muted">{{ log.event_type }}</span>
+              </div>
+              <code class="fs-7">{{ log.source_ip }}</code>
+            </div>
+            <div class="text-muted fs-7">
+              User: <strong class="text-light">{{ log.username }}</strong> | 
+              Location: <span class="text-light">{{ log.location or 'Unknown' }}</span> | 
+              Device: <span class="text-muted">{{ log.user_agent }}</span>
+              {% if log.failure_reason %}
+                | Reason: <span class="text-danger fw-semibold">{{ log.failure_reason }}</span>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-muted">No related log entries found in window.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
