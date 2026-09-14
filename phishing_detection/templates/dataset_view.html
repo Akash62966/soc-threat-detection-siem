@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Dataset & Feature Engineering | Phishing Detection ML{% endblock %}
+
+{% block header_title %}Dataset & Feature Importance Explorer{% endblock %}
+{% block header_subtitle %}Inspecting the 12 extracted URL feature vectors and sample dataset records{% endblock %}
+
+{% block content %}
+<div class="row g-4 mb-4">
+  <!-- Feature Importance Ranking -->
+  <div class="col-md-5">
+    <div class="soc-table-card h-100">
+      <div class="card-header-title">
+        <span><i class="bi bi-bar-chart-fill text-info"></i> Random Forest Feature Importances</span>
+      </div>
+      <p class="text-muted fs-8 mb-3">Relative contribution of each lexical feature towards classifying URL security risk.</p>
+
+      {% if importances %}
+        <div class="d-flex flex-column gap-2">
+          {% for feat, imp in importances.items()|sort(attribute='1', reverse=True) %}
+            <div>
+              <div class="d-flex justify-content-between fs-8 mb-1">
+                <span class="font-monospace text-light">{{ feat }}</span>
+                <span class="text-info font-monospace">{{ (imp * 100)|round(2) }}%</span>
+              </div>
+              <div class="progress" style="height: 6px; background-color: #121212;">
+                <div class="progress-bar bg-info" style="width: {{ (imp * 100)|round(2) }}%;"></div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-muted">No feature importances loaded.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Sample Dataset Browser -->
+  <div class="col-md-7">
+    <div class="soc-table-card h-100">
+      <div class="card-header-title">
+        <span><i class="bi bi-table text-success"></i> Dataset Preview (Sample Records)</span>
+        <span class="badge bg-dark border border-secondary text-muted">{{ samples|length }} Samples Displayed</span>
+      </div>
+
+      <div class="table-responsive" style="max-height: 480px; overflow-y: auto;">
+        <table class="table-soc">
+          <thead>
+            <tr>
+              <th>URL String</th>
+              <th>Target Label</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if samples %}
+              {% for s in samples %}
+                <tr>
+                  <td class="word-break-all font-monospace fs-8 text-light"><code>{{ s.url }}</code></td>
+                  <td>
+                    {% if s.label == 1 %}
+                      <span class="badge-phishing">Phishing (1)</span>
+                    {% else %}
+                      <span class="badge-legit">Legitimate (0)</span>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            {% else %}
+              <tr><td colspan="2" class="text-center text-muted">No dataset records found.</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,288 @@
+/* ============================================================
+   PHISHING URL DETECTOR - OLED JET BLACK THEME
+   ============================================================ */
+
+:root {
+  --bg-black: #000000;
+  --bg-sidebar: #050505;
+  --bg-card: #0a0a0a;
+  --bg-card-hover: #141414;
+  --bg-input: #121212;
+  --border-dark: #222222;
+  --text-main: #ffffff;
+  --text-muted: #888888;
+  --accent-cyan: #00f2fe;
+  --accent-blue: #2563eb;
+  --sev-safe: #00e676;
+  --sev-phishing: #ff1744;
+  --sev-warning: #ffab00;
+}
+
+html, body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Force dark bootstrap elements */
+.bg-dark, .bg-secondary, .bg-body, .bg-light {
+  background-color: #0a0a0a !important;
+  color: #ffffff !important;
+}
+
+.border-secondary, .border-dark {
+  border-color: #222222 !important;
+}
+
+/* Sidebar & Brand */
+.soc-sidebar {
+  width: 240px;
+  background-color: #050505 !important;
+  border-right: 1px solid #222222 !important;
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.soc-brand {
+  padding: 20px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #00f2fe !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #222222 !important;
+}
+
+.soc-brand span {
+  color: #ffffff !important;
+}
+
+.nav-link {
+  color: #888888 !important;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: #00f2fe !important;
+  background: rgba(0, 242, 254, 0.08) !important;
+  border-left-color: #00f2fe !important;
+}
+
+.soc-main {
+  margin-left: 240px;
+  padding: 25px 35px;
+  min-height: 100vh;
+  background-color: #000000 !important;
+}
+
+/* Header */
+.soc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #222222 !important;
+}
+
+.header-title h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffffff !important;
+}
+
+.header-title p {
+  margin: 4px 0 0 0;
+  color: #888888 !important;
+  font-size: 0.85rem;
+}
+
+/* KPI Cards Grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.kpi-card {
+  background: #0a0a0a !important;
+  border: 1px solid #222222 !important;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.8) !important;
+}
+
+.kpi-title {
+  color: #888888 !important;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.kpi-val {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffffff !important;
+}
+
+.kpi-sub {
+  font-size: 0.75rem;
+  color: #888888 !important;
+  margin-top: 6px;
+}
+
+/* Cards & Containers */
+.soc-table-card {
+  background: #0a0a0a !important;
+  border: 1px solid #222222 !important;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.8) !important;
+}
+
+.card-header-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #ffffff !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Prediction Result Cards */
+.result-box-legit {
+  background: rgba(0, 230, 118, 0.08) !important;
+  border: 1px solid #00e676 !important;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.result-box-phishing {
+  background: rgba(255, 23, 68, 0.08) !important;
+  border: 1px solid #ff1744 !important;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+/* Tables */
+.table-soc, .table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #ffffff !important;
+  font-size: 0.88rem;
+  background-color: transparent !important;
+}
+
+.table-soc th, .table th {
+  background-color: #111111 !important;
+  color: #888888 !important;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #222222 !important;
+}
+
+.table-soc td, .table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #222222 !important;
+  background-color: transparent !important;
+  color: #ffffff !important;
+}
+
+.table-soc tbody tr:hover, .table tbody tr:hover {
+  background-color: #141414 !important;
+}
+
+/* Inputs & Buttons */
+.form-control-soc, .form-select.form-control-soc, input, select {
+  background-color: #121212 !important;
+  border: 1px solid #222222 !important;
+  color: #ffffff !important;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.form-control-soc:focus, input:focus {
+  outline: none;
+  border-color: #00f2fe !important;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.3) !important;
+}
+
+.btn-soc {
+  background: #2563eb !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btn-soc:hover {
+  filter: brightness(1.25);
+  color: #ffffff !important;
+}
+
+.btn-soc-outline {
+  background: transparent !important;
+  border: 1px solid #333333 !important;
+  color: #ffffff !important;
+}
+
+.btn-soc-outline:hover {
+  background: #181818 !important;
+  border-color: #555555 !important;
+}
+
+/* Badges */
+.badge-legit {
+  background: rgba(0, 230, 118, 0.2) !important;
+  color: #00e676 !important;
+  border: 1px solid #00e676 !important;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.badge-phishing {
+  background: rgba(255, 23, 68, 0.2) !important;
+  color: #ff1744 !important;
+  border: 1px solid #ff1744 !important;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}

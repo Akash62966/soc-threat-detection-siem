@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}URL Scanner | Phishing Detection ML{% endblock %}
+
+{% block header_title %}Defensive Phishing URL Scanner{% endblock %}
+{% block header_subtitle %}Analyze URL strings for lexical, structural, and security anomalies using Random Forest ML{% endblock %}
+
+{% block content %}
+<!-- Scanner Card -->
+<div class="soc-table-card mb-4">
+  <div class="card-header-title">
+    <span><i class="bi bi-search text-info me-2"></i> Enter URL to Analyze</span>
+    <span class="badge bg-dark border border-secondary text-muted">Passive Lexical Evaluation</span>
+  </div>
+
+  <form id="urlPredictForm" class="row g-3">
+    <div class="col-md-9">
+      <div class="input-group">
+        <span class="input-group-text bg-dark border-secondary text-muted"><i class="bi bi-globe"></i></span>
+        <input type="text" id="inputUrl" class="form-control form-control-soc" placeholder="e.g. http://paypal-secure-login-verify-account.com/login.php" required>
+      </div>
+      <div class="form-text text-muted fs-8">
+        <i class="bi bi-shield-lock-fill text-success"></i> <strong>Safe Lab Guarantee:</strong> Submitted URLs are parsed strictly as text strings. No network requests or connections are established.
+      </div>
+    </div>
+    <div class="col-md-3">
+      <button type="submit" id="btnSubmitScan" class="btn-soc w-100 h-100 justify-content-center">
+        <i class="bi bi-shield-check"></i> Analyze & Predict URL Risk
+      </button>
+    </div>
+  </form>
+
+  <div class="mt-3 pt-3 border-top border-secondary">
+    <small class="text-muted d-block mb-2">Try Sample Demonstration URLs:</small>
+    <div class="d-flex flex-wrap gap-2">
+      <button class="btn btn-sm btn-outline-secondary py-0 px-2 fs-8 text-light" onclick="fillUrl('https://www.wikipedia.org/wiki/Main_Page')">
+        <i class="bi bi-check-circle text-success me-1"></i> Wikipedia (Legitimate)
+      </button>
+      <button class="btn btn-sm btn-outline-secondary py-0 px-2 fs-8 text-light" onclick="fillUrl('https://github.com/login')">
+        <i class="bi bi-check-circle text-success me-1"></i> GitHub Login (Legitimate)
+      </button>
+      <button class="btn btn-sm btn-outline-secondary py-0 px-2 fs-8 text-light" onclick="fillUrl('http://paypal-account-update-secure-login.com/login.php?token=9281')">
+        <i class="bi bi-exclamation-triangle text-danger me-1"></i> PayPal Spoof (Phishing)
+      </button>
+      <button class="btn btn-sm btn-outline-secondary py-0 px-2 fs-8 text-light" onclick="fillUrl('http://192.168.1.105/login-banking-security-update/@verify')">
+        <i class="bi bi-exclamation-triangle text-danger me-1"></i> IP Banking Spoof (Phishing)
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Dynamic Result Container -->
+<div id="resultContainer"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function fillUrl(url) {
+  document.getElementById('inputUrl').value = url;
+  document.getElementById('urlPredictForm').dispatchEvent(new Event('submit'));
+}
+</script>
+{% endblock %}

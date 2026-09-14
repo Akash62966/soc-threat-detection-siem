@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard & Analytics | Phishing Detection ML{% endblock %}
+
+{% block header_title %}Analytics & Historical Scans Dashboard{% endblock %}
+{% block header_subtitle %}Overview of user scan history, risk score distributions, and prediction ratios{% endblock %}
+
+{% block content %}
+<!-- KPI Cards -->
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-title">Total URLs Analyzed</div>
+    <div class="kpi-val">{{ kpis.total_scans }}</div>
+    <div class="kpi-sub"><i class="bi bi-activity text-info"></i> Ingested Scans</div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-title">Legitimate URLs</div>
+    <div class="kpi-val text-success">{{ kpis.legit_scans }}</div>
+    <div class="kpi-sub"><i class="bi bi-check-circle-fill text-success"></i> Safe Classified</div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-title">Phishing URLs</div>
+    <div class="kpi-val text-danger">{{ kpis.phishing_scans }}</div>
+    <div class="kpi-sub"><i class="bi bi-shield-slash-fill text-danger"></i> Flagged Malicious</div>
+  </div>
+
+  <div class="kpi-card">
+    <div class="kpi-title">Average Model Confidence</div>
+    <div class="kpi-val text-warning">{{ kpis.avg_confidence }}%</div>
+    <div class="kpi-sub"><i class="bi bi-speedometer text-warning"></i> Classification Certainty</div>
+  </div>
+</div>
+
+<!-- Historical Scans Table -->
+<div class="soc-table-card">
+  <div class="card-header-title">
+    <span><i class="bi bi-clock-history text-info"></i> Recent URL Analysis History</span>
+    <button class="btn btn-sm btn-outline-danger fs-8" onclick="clearHistory()">Clear Scan Logs</button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table-soc">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Timestamp</th>
+          <th>URL String</th>
+          <th>Prediction Result</th>
+          <th>Confidence</th>
+          <th>Risk Score</th>
+          <th>Key Explanations</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if recent_scans %}
+          {% for scan in recent_scans %}
+            <tr>
+              <td>{{ scan.id }}</td>
+              <td class="fs-8 text-muted">{{ scan.timestamp }}</td>
+              <td class="word-break-all font-monospace" style="max-width: 250px;"><code>{{ scan.url }}</code></td>
+              <td>
+                {% if scan.prediction == 'Potential Phishing' %}
+                  <span class="badge-phishing">{{ scan.prediction }}</span>
+                {% else %}
+                  <span class="badge-legit">{{ scan.prediction }}</span>
+                {% endif %}
+              </td>
+              <td class="fw-bold">{{ (scan.confidence * 100)|round(1) }}%</td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="progress flex-grow-1" style="height: 6px; background-color: #121212;">
+                    <div class="progress-bar {% if scan.risk_score > 60 %}bg-danger{% else %}bg-success{% endif %}" style="width: {{ scan.risk_score }}%;"></div>
+                  </div>
+                  <span class="fs-8 text-muted">{{ scan.risk_score }}</span>
+                </div>
+              </td>
+              <td class="fs-8 text-muted" style="max-width: 280px;">{{ scan.explanation }}</td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="7" class="text-center text-muted py-4">
+              No historical URL scan records found. Go to <strong>"URL Scanner"</strong> to analyze your first URL!
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function clearHistory() {
+  if (confirm("Are you sure you want to clear scan logs?")) {
+    fetch('/api/clear-history', { method: 'POST' })
+      .then(res => res.json())
+      .then(res => window.location.reload());
+  }
+}
+</script>
+{% endblock %}
