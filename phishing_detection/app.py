@@ -129,4 +129,7 @@ def api_clear_history():
     return jsonify({"message": "Scan history successfully reset."})
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5051)
+    import webbrowser
+    import threading
+    threading.Timer(1.5, lambda: webbrowser.open("http://127.0.0.1:5051")).start()
+    app.run(debug=False, port=5051)

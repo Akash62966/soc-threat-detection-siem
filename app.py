@@ -186,4 +186,7 @@ def generate_automated_explanation(alert, related_logs):
     return "\n".join(lines)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5050)
+    import webbrowser
+    import threading
+    threading.Timer(1.5, lambda: webbrowser.open("http://127.0.0.1:5050")).start()
+    app.run(debug=False, port=5050)
